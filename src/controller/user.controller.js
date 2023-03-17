@@ -60,7 +60,7 @@ router.post("/login",async(req,res)=>{
 })
 
 router.get('/email', verifyToken, (req, res) => {
-    res.status(200).json(req.body.email);
+    res.status(200).json({req.body.email});
 });
 router.get('/protected', verifyToken, (req, res) => {
     res.status(200).json({ message: 'Protected route' });
