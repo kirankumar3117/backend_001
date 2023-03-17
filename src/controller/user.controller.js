@@ -58,7 +58,12 @@ router.post("/login",async(req,res)=>{
     res.status(500).json({ message: 'Internal server error' });
   }
 })
+
+router.get('/email', verifyToken, (req, res) => {
+    res.status(200).json(req.body.email);
+});
 router.get('/protected', verifyToken, (req, res) => {
     res.status(200).json({ message: 'Protected route' });
 });
+
 module.exports=router;
