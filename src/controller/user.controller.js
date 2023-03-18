@@ -52,6 +52,7 @@ router.post("/login",async(req,res)=>{
     }
     // Generate a JWT token with user ID as payload
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY);
+   
     res.status(200).json({ token });
   } catch (error) {
     console.error(error);
@@ -63,5 +64,6 @@ router.post("/login",async(req,res)=>{
 router.get('/protected', verifyToken, (req, res) => {
     res.status(200).json({ message: 'Protected route' });
 });
+
 
 module.exports=router;
