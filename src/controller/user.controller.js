@@ -26,7 +26,11 @@ router.post("/register",async(req,res)=>{
       if (existingUser) {
         return res.status(409).json({ message: 'User already exists' });
       }
-      const user = new User({ email, password });
+      const user = new User({ email, password , data:{
+        email:email,
+        update:false,
+        noupdates:0
+      }});
       await user.save();
       res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
@@ -35,6 +39,38 @@ router.post("/register",async(req,res)=>{
     }
 
 
+})
+router.put("/editdata",verifyToken,async(req,res)=>{
+  const userId=req.userId;
+  
+  
+  if(!userId){
+    return res.status(400).json({ message: 'Token verification failed' });  
+  }
+  try{
+    const user=await User.findByIdAndUpdate({_id:userId},{$set:{
+      data:req.body
+    }});
+    await user.save();
+      res.status(201).json({ message: 'User data updated' });
+  }
+  catch(error){
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+router.get("/userdata",verifyToken,async(req,res)=>{
+  const userId=req.userId;
+  if(!userId){
+    return res.status(400).json({ message: 'Token verification failed' });  
+  }
+  try{
+    const user=await User.findById({_id:userId});
+    return res.status(200).send(user.data);
+  }catch(error){
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 })
 router.post("/login",async(req,res)=>{
     const { email, password } = req.body;
@@ -62,6 +98,7 @@ router.post("/login",async(req,res)=>{
 
 
 router.get('/protected', verifyToken, (req, res) => {
+  
     res.status(200).json({ message: 'Protected route' });
 });
 

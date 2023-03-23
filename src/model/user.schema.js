@@ -5,10 +5,7 @@ const bcrypt = require('bcryptjs');
 const userSchema=new mongoose.Schema({
     email: {type:String,required:true},
     password:{type:String,required:true},
-    data:{tyep:Object,user:{
-        details:[],
-        address:[]
-    }}
+    data:{type:Object}
 }, {
     version_key:false,
     timestamps:true
@@ -32,5 +29,6 @@ userSchema.methods.checkPassword = async function (password) {
   };
 
 const User = mongoose.model("userdata",userSchema);
+
 
 module.exports=User;
