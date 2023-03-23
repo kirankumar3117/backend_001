@@ -68,7 +68,6 @@ router.get("/userdata",verifyToken,async(req,res)=>{
     const user=await User.findById({_id:userId});
     return res.status(200).send(user.data);
   }catch(error){
-    console.error(error);
     res.status(500).json({ message: 'Internal server error' });
   }
 })
@@ -97,10 +96,21 @@ router.post("/login",async(req,res)=>{
 })
 
 
-router.get('/protected', verifyToken, (req, res) => {
+router.get('/protected', verifyToken, async(req, res) => {
   
-    res.status(200).json({ message: 'Protected route' });
+  try{
+    const user=await User.findById({_id:req.userId});
+    if(!user){
+      return res.status(400).json({ message: 'Not a protected user' });  
+
+    }
+    return res.status(200).json({ message: 'Protected route' });
+
+  }catch(error){
+    res.status(500).json({ message: 'Internal server error' });
+  }
 });
 
 
 module.exports=router;
+
