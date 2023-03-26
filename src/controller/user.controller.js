@@ -1,4 +1,5 @@
 const express=require("express");
+const sharp = require('sharp');
 
 const router=express.Router();
 
@@ -43,6 +44,11 @@ router.post("/register",async(req,res)=>{
 router.put("/editdata",verifyToken,async(req,res)=>{
   const userId=req.userId;
   
+  if(req.body.image){
+    const imageBuffer = await sharp(req.body.image).jpeg({ quality: 50 }).toBuffer();
+    const base64String = imageBuffer.toString('base64');
+    req.body.image=base64String
+  }
   
   if(!userId){
     return res.status(400).json({ message: 'Token verification failed' });  
