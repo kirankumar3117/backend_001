@@ -126,5 +126,22 @@ router.get('/getuserid',verifyToken,async(req,res)=>{
   }
 })
 
+router.get('/getuser/:id',async(req,res)=>{
+  const user=await User.findById(req.params.id);
+  if(!user){
+    return res.status(400).json({ message: 'User Not Exists' });  
+
+  }
+  try{
+    return res.status(200).send(user.data)
+  }
+  catch(err){
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
+
+
+
+
 module.exports=router;
 
