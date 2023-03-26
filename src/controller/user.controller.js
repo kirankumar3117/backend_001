@@ -111,6 +111,20 @@ router.get('/protected', verifyToken, async(req, res) => {
   }
 });
 
+router.get('/getuserid',verifyToken,async(req,res)=>{
+  const user=await User.findById({_id:req.userId});
+  if(!user){
+    return res.status(400).json({ message: 'Token verification failed' });  
+
+  }
+
+  try{
+    return res.status(200).send(user._id)
+  }
+  catch(err){
+    res.status(500).json({ message: 'Internal server error' });
+  }
+})
 
 module.exports=router;
 
