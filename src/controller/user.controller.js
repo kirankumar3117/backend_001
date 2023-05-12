@@ -88,8 +88,8 @@ router.post("/login",async(req,res)=>{
     }
     // Generate a JWT token with user ID as payload
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY);
-   
-    res.status(200).json({ token });
+    const refreshToken = jwt.sign({userId: user._id},process.env.JWT_SECRET_KEY)
+    res.status(200).json({ accessToken:token,refreshToken:refreshToken });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });
