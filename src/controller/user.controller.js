@@ -1,4 +1,5 @@
 const express=require("express");
+const requestIp = require('request-ip')
 
 const router=express.Router();
 
@@ -87,13 +88,14 @@ router.post("/login",async(req,res)=>{
       return res.status(401).json({ message: 'Invalid email or password' });
     }
     // Generate a JWT token with user ID as payload
-    const ip = req.connection.remoteAddress;
+    var clientIp = requestIp.getClientIp(req)
+    console.log(clientIp)
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY);
     const refreshToken = jwt.sign({userId: user._id,ip:req.body.ip},process.env.JWT_SECRET_KEY)
-    res.status(200).json({ accessToken:token,refreshToken:refreshToken ,ip});
+    res.status(200).json({ accessToken:token,refreshToken:refreshToken ,clientIp:clientIp});
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: error.message });
   }
 })
 
