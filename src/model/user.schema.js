@@ -6,7 +6,8 @@ const userSchema=new mongoose.Schema({
     email: {type:String,required:true},
     password:{type:String,required:true},
     data:{type:Object},
-    image:{data:Buffer,contentType:String}
+    image:{data:Buffer,contentType:String},
+    ip:{type:String,required:true}
 }, {
     version_key:false,
     timestamps:true
