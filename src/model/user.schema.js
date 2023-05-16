@@ -7,7 +7,7 @@ const userSchema=new mongoose.Schema({
     password:{type:String,required:true},
     data:{type:Object},
     image:{data:Buffer,contentType:String},
-    ip:{type:String,required:true}
+    ip:{type:String}
 }, {
     version_key:false,
     timestamps:true
