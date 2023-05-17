@@ -2,6 +2,7 @@ const express=require("express");
 const cors=require("cors");
 const app=express();
 const userController=require("./controller/user.controller");
+const productController=require("./controller/product.controller")
 const bodyParser = require('body-parser');
 
 require('dotenv').config()
@@ -14,6 +15,7 @@ const Port= process.env.PORT || 8000 ;
 
 
 app.use("",userController);
+app.use("",productController)
 
 module.exports={
     app:app,
